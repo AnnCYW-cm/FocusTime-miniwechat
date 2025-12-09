@@ -26,7 +26,13 @@
         <text class="label-icon">📄</text>
         <text>任务描述</text>
       </view>
-      <textarea class="form-textarea" placeholder="请输入任务描述（最多200字）" placeholder-style="line-height: 44rpx;" maxlength="200" value="{{formData.description}}" bindinput="onDescriptionInput" />
+      <textarea
+        class="form-textarea"
+        placeholder="请输入任务描述（最多200字）"
+        maxlength="200"
+        model:value="{{formData.description}}"
+        adjust-position="{{true}}"
+      />
     </view>
 
     <!-- 优先级 -->

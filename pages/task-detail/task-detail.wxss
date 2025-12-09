@@ -84,6 +84,7 @@
   border-radius: 20rpx;
   border: 2rpx solid #C5F0ED;
   box-shadow: 0 4rpx 16rpx rgba(78, 205, 196, 0.1);
+  overflow: visible !important;
 }
 
 .form-item {
@@ -144,6 +145,10 @@
   transition: all 0.2s;
   box-sizing: border-box;
   line-height: 44rpx;
+  pointer-events: auto;
+  touch-action: auto;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .form-textarea:focus {

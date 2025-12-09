@@ -139,12 +139,6 @@ Page({
     })
   },
 
-  // 描述输入
-  onDescriptionInput(e) {
-    this.setData({
-      'formData.description': e.detail.value
-    })
-  },
 
   // 优先级选择
   onPriorityChange(e) {
