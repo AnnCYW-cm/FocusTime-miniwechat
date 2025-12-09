@@ -1,0 +1,175 @@
+/* pages/history/history.wxss - 清新蓝绿配色 */
+
+.date-selector {
+  padding: 20rpx 28rpx;
+  margin-bottom: 16rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  border: 2rpx solid #C5F0ED;
+  box-shadow: 0 2rpx 8rpx rgba(78, 205, 196, 0.1);
+}
+
+.date-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 0;
+}
+
+.date-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.date-text {
+  font-size: 28rpx;
+  color: #2C3E50;
+  font-weight: 700;
+  margin-right: 12rpx;
+  letter-spacing: 0.5rpx;
+}
+
+.date-arrow {
+  font-size: 18rpx;
+  color: #7F8C8D;
+}
+
+/* 当日统计 */
+.day-stats {
+  margin-bottom: 16rpx;
+  padding: 36rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  border: 2rpx solid #C5F0ED;
+  box-shadow: 0 4rpx 16rpx rgba(78, 205, 196, 0.1);
+}
+
+.stats-row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.stat-item-small {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 28rpx 16rpx;
+  background: linear-gradient(135deg, #F0FCFB 0%, #E8F8F7 100%);
+  border-radius: 16rpx;
+  border: 2rpx solid #C5F0ED;
+}
+
+.stat-icon-small {
+  font-size: 32rpx;
+  margin-bottom: 12rpx;
+}
+
+.stat-label {
+  font-size: 20rpx;
+  color: #7F8C8D;
+  margin-top: 6rpx;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1rpx;
+}
+
+.stat-value-small {
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #4ECDC4;
+  line-height: 1;
+}
+
+/* 记录列表 */
+.logs-section {
+  margin-top: 16rpx;
+}
+
+.section-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 20rpx;
+  letter-spacing: 1rpx;
+  padding: 0 4rpx;
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.log-item {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  border: 2rpx solid #C5F0ED;
+  box-shadow: 0 2rpx 8rpx rgba(78, 205, 196, 0.08);
+  transition: all 0.2s;
+}
+
+.log-item:active {
+  background: #F0FCFB;
+  transform: translateY(-2rpx);
+  box-shadow: 0 6rpx 20rpx rgba(78, 205, 196, 0.15);
+}
+
+.log-time {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding-bottom: 12rpx;
+  border-bottom: 2rpx solid #E8F8F7;
+}
+
+.time-icon {
+  font-size: 22rpx;
+  margin-right: 10rpx;
+}
+
+.time-text {
+  font-size: 22rpx;
+  color: #7F8C8D;
+  font-weight: 600;
+  letter-spacing: 0.5rpx;
+}
+
+.log-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.log-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10rpx;
+}
+
+.log-task {
+  font-size: 30rpx;
+  color: #2C3E50;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.log-duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: 24rpx;
+  color: #4ECDC4;
+  font-weight: 700;
+  background: #E8F8F7;
+  padding: 8rpx 14rpx;
+  border-radius: 10rpx;
+  border: 1rpx solid #C5F0ED;
+  align-self: flex-start;
+}
+
+.duration-icon {
+  font-size: 20rpx;
+}

@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# WeChat DevTools
+.vscode/
+miniprogram_npm/
+node_modules/
+
+# Project private config
+project.private.config.json
+
+# Debug scripts (temporary)
+debug-stats.js
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cloud functions dependencies
+cloudfunctions/**/node_modules/
+
+# Temporary files
+*.tmp
+*.swp
+*~

@@ -1,0 +1,286 @@
+/* pages/task-detail/task-detail.wxss - 清新蓝绿配色 */
+
+/* 错误提示横幅 */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx 28rpx;
+  margin: 20rpx 24rpx;
+  background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+  border: 2rpx solid #FFB8B8;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 107, 0.15);
+  animation: slideInDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  font-size: 48rpx;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8rpx); }
+  75% { transform: translateX(8rpx); }
+}
+
+.error-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.error-title {
+  font-size: 28rpx;
+  color: #FF6B6B;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.error-hint {
+  font-size: 22rpx;
+  color: #FF8F8F;
+  line-height: 1.5;
+}
+
+.btn-retry {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8F8F 100%);
+  color: #FFFFFF;
+  font-size: 24rpx;
+  padding: 16rpx 28rpx;
+  border-radius: 12rpx;
+  border: none;
+  font-weight: 700;
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 107, 0.3);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-retry::after {
+  border: none;
+}
+
+.btn-retry:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 6rpx rgba(255, 107, 107, 0.25);
+}
+
+.form-card {
+  margin-top: 16rpx;
+  padding: 36rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  border: 2rpx solid #C5F0ED;
+  box-shadow: 0 4rpx 16rpx rgba(78, 205, 196, 0.1);
+}
+
+.form-item {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 26rpx;
+  color: #2C3E50;
+  margin-bottom: 16rpx;
+  font-weight: 700;
+  letter-spacing: 0.5rpx;
+}
+
+.label-icon {
+  font-size: 26rpx;
+}
+
+.required {
+  color: #4ECDC4;
+  font-weight: 800;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 24rpx 28rpx;
+  background: #F0FCFB;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #2C3E50;
+  border: 2rpx solid #C5F0ED;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  line-height: 44rpx;
+  height: 92rpx;
+  vertical-align: middle;
+}
+
+.form-input:focus {
+  background: #FFFFFF;
+  border-color: #4ECDC4;
+}
+
+.form-textarea {
+  display: block;
+  width: 100%;
+  min-height: 180rpx;
+  padding: 24rpx 28rpx;
+  background: #F0FCFB;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #2C3E50;
+  border: 2rpx solid #C5F0ED;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  line-height: 44rpx;
+}
+
+.form-textarea:focus {
+  background: #FFFFFF;
+  border-color: #4ECDC4;
+}
+
+/* 优先级选择器 */
+.priority-selector {
+  display: flex;
+  gap: 10rpx;
+}
+
+.priority-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  padding: 24rpx;
+  background: #F0FCFB;
+  border-radius: 14rpx;
+  border: 2rpx solid #C5F0ED;
+  font-size: 26rpx;
+  color: #7F8C8D;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.priority-option:active {
+  transform: scale(0.98);
+}
+
+.priority-option.active {
+  border-color: #4ECDC4;
+  background: linear-gradient(135deg, #E8F8F7 0%, #F0FCFB 100%);
+  color: #4ECDC4;
+  font-weight: 800;
+  box-shadow: 0 4rpx 12rpx rgba(78, 205, 196, 0.15);
+}
+
+.priority-dot {
+  font-size: 20rpx;
+}
+
+/* 步进器 */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32rpx;
+}
+
+.stepper-btn {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 38rpx;
+  background: #4ECDC4;
+  color: #FFFFFF;
+  font-size: 38rpx;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 6rpx 18rpx rgba(78, 205, 196, 0.3);
+  line-height: 1;
+}
+
+.stepper-btn:active {
+  transform: scale(0.95);
+  background: #3DBAB3;
+  box-shadow: 0 3rpx 12rpx rgba(78, 205, 196, 0.3);
+}
+
+.stepper-value {
+  font-size: 54rpx;
+  font-weight: 800;
+  color: #4ECDC4;
+  min-width: 100rpx;
+  text-align: center;
+  line-height: 1;
+}
+
+/* 日期选择器 */
+.picker-display {
+  padding: 28rpx;
+  background: #F0FCFB;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #2C3E50;
+  border: 2rpx solid #C5F0ED;
+  font-weight: 600;
+}
+
+.picker-display .placeholder {
+  color: #7F8C8D;
+  font-weight: 500;
+}
+
+/* 按钮组 */
+.form-actions {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 48rpx;
+}
+
+.form-actions button {
+  flex: 1;
+  font-size: 30rpx;
+  padding: 30rpx;
+  font-weight: 700;
+  border-radius: 16rpx;
+  letter-spacing: 1rpx;
+}
+
+.form-actions .btn-primary {
+  background: #4ECDC4;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(78, 205, 196, 0.3);
+}
+
+.form-actions .btn-primary:active {
+  transform: translateY(2rpx);
+  background: #3DBAB3;
+  box-shadow: 0 4rpx 16rpx rgba(78, 205, 196, 0.3);
+}
+
+.form-actions .btn-secondary {
+  background: #FFFFFF;
+  color: #4ECDC4;
+  border: 2rpx solid #C5F0ED;
+}
+
+.form-actions .btn-secondary:active {
+  background: #F0FCFB;
+  border-color: #4ECDC4;
+}

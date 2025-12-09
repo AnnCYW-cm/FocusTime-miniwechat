@@ -1,0 +1,69 @@
+<!-- pages/statistics/statistics.wxml -->
+<view class="container">
+  <!-- 总览卡片 -->
+  <view class="overview-card card">
+    <view class="overview-title">📊 本周统计</view>
+    <view class="overview-stats">
+      <view class="overview-item">
+        <text class="overview-icon">🍅</text>
+        <text class="overview-value">{{weekStats.totalPomodoros}}</text>
+        <text class="overview-label">本周番茄</text>
+      </view>
+      <view class="overview-item">
+        <text class="overview-icon">⏱</text>
+        <text class="overview-value">{{weekStats.totalMinutes}}</text>
+        <text class="overview-label">分钟</text>
+      </view>
+      <view class="overview-item">
+        <text class="overview-icon">✅</text>
+        <text class="overview-value">{{weekStats.completedTasks}}</text>
+        <text class="overview-label">完成任务</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 周统计图表 -->
+  <view class="chart-card card">
+    <view class="chart-title">📈 最近7天</view>
+    <view class="chart-container">
+      <view class="bar-chart">
+        <view wx:for="{{weeklyData}}" wx:key="date" class="bar-item">
+          <view class="bar-wrapper">
+            <view class="bar" style="height: {{item.height}}%">
+              <text wx:if="{{item.count > 0}}" class="bar-label">{{item.count}}</text>
+            </view>
+          </view>
+          <text class="bar-date">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 趋势分析 -->
+  <view class="trend-card card">
+    <view class="trend-title">🔥 趋势分析</view>
+    <view class="trend-list">
+      <view class="trend-item">
+        <view class="trend-left">
+          <text class="trend-icon">📊</text>
+          <text class="trend-label">平均每日番茄</text>
+        </view>
+        <text class="trend-value">{{avgDaily}}</text>
+      </view>
+      <view class="trend-item">
+        <view class="trend-left">
+          <text class="trend-icon">🏆</text>
+          <text class="trend-label">最高单日番茄</text>
+        </view>
+        <text class="trend-value">{{maxDaily}}</text>
+      </view>
+      <view class="trend-item">
+        <view class="trend-left">
+          <text class="trend-icon">🔥</text>
+          <text class="trend-label">连续专注天数</text>
+        </view>
+        <text class="trend-value">{{streakDays}} 天</text>
+      </view>
+    </view>
+  </view>
+</view>

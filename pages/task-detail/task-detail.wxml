@@ -1,0 +1,88 @@
+<!-- pages/task-detail/task-detail.wxml -->
+<view class="container">
+  <!-- 错误提示 -->
+  <view wx:if="{{loadError}}" class="error-banner">
+    <view class="error-icon">⚠️</view>
+    <view class="error-content">
+      <text class="error-title">{{errorMessage}}</text>
+      <text class="error-hint">请查看控制台获取详细错误信息</text>
+    </view>
+    <button class="btn-retry" bindtap="onRetryLoad">重试</button>
+  </view>
+
+  <view class="form-card card">
+    <!-- 任务标题 -->
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-icon">📝</text>
+        <text>任务标题 <text class="required">*</text></text>
+      </view>
+      <input class="form-input" placeholder="请输入任务标题（最多50字）" placeholder-style="line-height: 44rpx;" maxlength="50" value="{{formData.title}}" bindinput="onTitleInput" />
+    </view>
+
+    <!-- 任务描述 -->
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-icon">📄</text>
+        <text>任务描述</text>
+      </view>
+      <textarea class="form-textarea" placeholder="请输入任务描述（最多200字）" placeholder-style="line-height: 44rpx;" maxlength="200" value="{{formData.description}}" bindinput="onDescriptionInput" />
+    </view>
+
+    <!-- 优先级 -->
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-icon">🔥</text>
+        <text>优先级 <text class="required">*</text></text>
+      </view>
+      <view class="priority-selector">
+        <view class="priority-option {{formData.priority === 'high' ? 'active' : ''}}" bindtap="onPriorityChange" data-priority="high">
+          <text class="priority-dot priority-high">●</text>
+          <text>高</text>
+        </view>
+        <view class="priority-option {{formData.priority === 'medium' ? 'active' : ''}}" bindtap="onPriorityChange" data-priority="medium">
+          <text class="priority-dot priority-medium">●</text>
+          <text>中</text>
+        </view>
+        <view class="priority-option {{formData.priority === 'low' ? 'active' : ''}}" bindtap="onPriorityChange" data-priority="low">
+          <text class="priority-dot priority-low">●</text>
+          <text>低</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 目标番茄数 -->
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-icon">🍅</text>
+        <text>目标番茄数 <text class="required">*</text></text>
+      </view>
+      <view class="stepper">
+        <button class="stepper-btn" bindtap="onPomodoroDecrease">−</button>
+        <text class="stepper-value">{{formData.pomodoroTarget}}</text>
+        <button class="stepper-btn" bindtap="onPomodoroIncrease">+</button>
+      </view>
+    </view>
+
+    <!-- 截止日期 -->
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-icon">📅</text>
+        <text>截止日期</text>
+      </view>
+      <picker mode="date" value="{{formData.dueDate}}" bindchange="onDueDateChange">
+        <view class="picker-display">
+          <text class="{{formData.dueDate ? '' : 'placeholder'}}">
+            {{formData.dueDate || '选择截止日期（可选）'}}
+          </text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 按钮组 -->
+    <view class="form-actions">
+      <button class="btn-secondary" bindtap="onCancel">✕ 取消</button>
+      <button class="btn-primary" bindtap="onSave">{{isEdit ? '✓ 保存' : '+ 创建'}}</button>
+    </view>
+  </view>
+</view>

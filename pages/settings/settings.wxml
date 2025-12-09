@@ -1,0 +1,96 @@
+<!-- pages/settings/settings.wxml -->
+<view class="container">
+  <view class="settings-card card">
+    <view class="settings-title">⚙️ 番茄钟设置</view>
+
+    <!-- 番茄时长 -->
+    <view class="setting-item">
+      <view class="setting-header">
+        <view class="setting-left">
+          <text class="setting-icon">🍅</text>
+          <text class="setting-label">番茄时长</text>
+        </view>
+        <text class="setting-value">{{settings.pomodoroDuration}} 分钟</text>
+      </view>
+      <slider class="setting-slider" min="5" max="60" step="5" value="{{settings.pomodoroDuration}}" bindchange="onPomodoroDurationChange" show-value block-size="22" activeColor="#4ECDC4" backgroundColor="#E8F8F7" block-color="#4ECDC4" />
+      <view class="slider-hint">
+        <text>5分钟</text>
+        <text>60分钟</text>
+      </view>
+    </view>
+
+    <!-- 短休息时长 -->
+    <view class="setting-item">
+      <view class="setting-header">
+        <view class="setting-left">
+          <text class="setting-icon">☕</text>
+          <text class="setting-label">短休息</text>
+        </view>
+        <text class="setting-value">{{settings.shortBreak}} 分钟</text>
+      </view>
+      <slider class="setting-slider" min="1" max="15" step="1" value="{{settings.shortBreak}}" bindchange="onShortBreakChange" show-value block-size="22" activeColor="#4ECDC4" backgroundColor="#E8F8F7" block-color="#4ECDC4" />
+      <view class="slider-hint">
+        <text>1分钟</text>
+        <text>15分钟</text>
+      </view>
+    </view>
+
+    <!-- 长休息时长 -->
+    <view class="setting-item">
+      <view class="setting-header">
+        <view class="setting-left">
+          <text class="setting-icon">🌙</text>
+          <text class="setting-label">长休息</text>
+        </view>
+        <text class="setting-value">{{settings.longBreak}} 分钟</text>
+      </view>
+      <slider class="setting-slider" min="10" max="30" step="5" value="{{settings.longBreak}}" bindchange="onLongBreakChange" show-value block-size="22" activeColor="#4ECDC4" backgroundColor="#E8F8F7" block-color="#4ECDC4" />
+      <view class="slider-hint">
+        <text>10分钟</text>
+        <text>30分钟</text>
+      </view>
+    </view>
+
+    <!-- 长休息间隔 -->
+    <view class="setting-item">
+      <view class="setting-header">
+        <view class="setting-left">
+          <text class="setting-icon">🔄</text>
+          <text class="setting-label">长休息间隔</text>
+        </view>
+        <text class="setting-value">每 {{settings.longBreakInterval}} 个番茄</text>
+      </view>
+      <slider class="setting-slider" min="2" max="8" step="1" value="{{settings.longBreakInterval}}" bindchange="onLongBreakIntervalChange" show-value block-size="22" activeColor="#4ECDC4" backgroundColor="#E8F8F7" block-color="#4ECDC4" />
+      <view class="slider-hint">
+        <text>2个</text>
+        <text>8个</text>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 提示设置 -->
+    <view class="settings-title">🔔 提醒设置</view>
+
+    <view class="setting-item switch-item">
+      <view class="setting-left">
+        <text class="setting-icon">📳</text>
+        <text class="setting-label">完成震动</text>
+      </view>
+      <switch class="setting-switch" checked="{{settings.vibrationEnabled}}" bindchange="onVibrationChange" color="#4ECDC4" />
+    </view>
+
+    <view class="setting-item switch-item">
+      <view class="setting-left">
+        <text class="setting-icon">🔊</text>
+        <text class="setting-label">完成提示音</text>
+      </view>
+      <switch class="setting-switch" checked="{{settings.soundEnabled}}" bindchange="onSoundChange" color="#4ECDC4" />
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-section">
+    <button class="btn-primary btn-save" bindtap="onSave">💾 保存设置</button>
+  </view>
+</view>

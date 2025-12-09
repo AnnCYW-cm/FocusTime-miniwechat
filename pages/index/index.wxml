@@ -1,0 +1,308 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+  <!-- 番茄钟区域 -->
+  <view class="pomodoro-card card">
+    <!-- 圆形计时器 -->
+    <view class="timer-circle">
+      <view class="timer-display">
+        <text class="timer-text">{{timerDisplay}}</text>
+      </view>
+      <canvas class="timer-canvas" canvas-id="timerCanvas"></canvas>
+    </view>
+
+    <!-- 控制按钮 -->
+    <view class="timer-controls">
+      <button wx:if="{{timerState === 'idle'}}" class="btn-primary btn-start" bindtap="onStartTimer">
+        开始专注
+      </button>
+
+      <view wx:if="{{timerState === 'running'}}" class="control-buttons">
+        <button class="btn-secondary" bindtap="onPauseTimer">暂停</button>
+        <button class="btn-danger" bindtap="onAbandonTimer">放弃</button>
+      </view>
+
+      <view wx:if="{{timerState === 'paused'}}" class="control-buttons">
+        <button class="btn-primary" bindtap="onResumeTimer">继续</button>
+        <button class="btn-danger" bindtap="onAbandonTimer">放弃</button>
+      </view>
+
+      <view wx:if="{{timerState === 'break'}}" class="break-info">
+        <text class="break-text">休息时间</text>
+        <button class="btn-secondary btn-skip" bindtap="onSkipBreak">跳过休息</button>
+      </view>
+    </view>
+
+    <!-- 当前任务显示 -->
+    <view wx:if="{{currentTask}}" class="current-task">
+      <view class="task-info">
+        <text class="task-label">当前任务：</text>
+        <text class="task-title">{{currentTask.title}}</text>
+      </view>
+      <view class="pomodoro-progress">
+        <text wx:for="{{currentTask.pomodoroTarget}}" wx:key="index" class="pomodoro-dot {{index < currentTask.pomodoroCompleted ? 'completed' : ''}}">🍅</text>
+        <text class="progress-text">({{currentTask.pomodoroCompleted}}/{{currentTask.pomodoroTarget}})</text>
+      </view>
+    </view>
+    <view wx:else class="select-task-hint" bindtap="onSelectTask">
+      <text>点击选择任务开始专注 →</text>
+    </view>
+  </view>
+
+  <!-- 今日概览 -->
+  <view class="today-overview card">
+    <view class="overview-title">今日数据</view>
+    <view class="stats-row">
+      <view class="stat-item">
+        <text class="stat-icon">🍅</text>
+        <text class="stat-value">{{todayStats.pomodoroCount}}</text>
+        <text class="stat-label">番茄数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-icon">⏱</text>
+        <text class="stat-value">{{todayStats.focusMinutes}}</text>
+        <text class="stat-label">分钟</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-icon">✅</text>
+        <text class="stat-value">{{todayStats.completedTasks}}</text>
+        <text class="stat-label">完成任务</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="task-section">
+    <view class="section-header">
+      <text class="section-title">📋 任务列表</text>
+      <button class="btn-add" bindtap="onAddTask">+ 新建</button>
+    </view>
+
+    <!-- 筛选器 -->
+    <view class="filter-bar">
+      <view class="filter-tabs">
+        <text class="filter-tab {{filterStatus === 'all' ? 'active' : ''}}" bindtap="onFilterChange" data-status="all">全部</text>
+        <text class="filter-tab {{filterStatus === 'pending' ? 'active' : ''}}" bindtap="onFilterChange" data-status="pending">待开始</text>
+        <text class="filter-tab {{filterStatus === 'in_progress' ? 'active' : ''}}" bindtap="onFilterChange" data-status="in_progress">进行中</text>
+        <text class="filter-tab {{filterStatus === 'completed' ? 'active' : ''}}" bindtap="onFilterChange" data-status="completed">已完成</text>
+      </view>
+    </view>
+
+    <!-- 任务列表 -->
+    <view wx:if="{{tasks.length > 0}}" class="task-list">
+      <view wx:for="{{tasks}}" wx:key="_id" class="task-item" bindtap="onTaskTap" data-task="{{item}}">
+        <view class="task-main">
+          <view class="task-left">
+            <text class="priority-dot priority-{{item.priority}}">●</text>
+            <text class="task-title {{item.status === 'completed' ? 'completed' : ''}}">{{item.title}}</text>
+          </view>
+          <view class="task-right">
+            <text class="pomodoro-badge">🍅 {{item.pomodoroCompleted}}/{{item.pomodoroTarget}}</text>
+          </view>
+        </view>
+        <view class="task-actions">
+          <button wx:if="{{item.status !== 'completed'}}" class="btn-action btn-complete" catchtap="onCompleteTask" data-id="{{item._id}}">✓ 完成</button>
+          <button class="btn-action btn-edit" catchtap="onEditTask" data-id="{{item._id}}">编辑</button>
+          <button class="btn-action btn-delete" catchtap="onDeleteTask" data-id="{{item._id}}">删除</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:else class="empty-state">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">还没有任务，点击上方按钮创建第一个吧</text>
+    </view>
+  </view>
+</view>
+
+<!-- 任务选择弹窗 -->
+<view wx:if="{{showTaskSelector}}" class="modal-mask" catchtap="onCloseTaskSelector">
+  <view class="modal-content" catchtap="onModalContentTap">
+    <view class="modal-header">
+      <text class="modal-title">选择任务</text>
+      <text class="modal-close" catchtap="onCloseTaskSelector">✕</text>
+    </view>
+    <view class="modal-body">
+      <!-- 时长快速选择 -->
+      <view class="duration-selector">
+        <view class="duration-label">⏱ 本次番茄时长</view>
+        <view class="duration-options">
+          <view class="duration-option {{customDuration === 15 ? 'active' : ''}}" bindtap="onSelectDuration" data-duration="15">
+            <text class="duration-text">15</text>
+            <text class="duration-unit">分钟</text>
+          </view>
+          <view class="duration-option {{customDuration === 25 ? 'active' : ''}}" bindtap="onSelectDuration" data-duration="25">
+            <text class="duration-text">25</text>
+            <text class="duration-unit">分钟</text>
+          </view>
+          <view class="duration-option {{customDuration === 30 ? 'active' : ''}}" bindtap="onSelectDuration" data-duration="30">
+            <text class="duration-text">30</text>
+            <text class="duration-unit">分钟</text>
+          </view>
+          <view class="duration-option {{customDuration === 45 ? 'active' : ''}}" bindtap="onSelectDuration" data-duration="45">
+            <text class="duration-text">45</text>
+            <text class="duration-unit">分钟</text>
+          </view>
+          <view class="duration-option {{customDuration === 60 ? 'active' : ''}}" bindtap="onSelectDuration" data-duration="60">
+            <text class="duration-text">60</text>
+            <text class="duration-unit">分钟</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="task-list-divider"></view>
+
+      <!-- 任务列表 -->
+      <view wx:for="{{availableTasks}}" wx:key="_id" class="selector-item" bindtap="onTaskSelected" data-task="{{item}}">
+        <text class="priority-dot priority-{{item.priority}}">●</text>
+        <text class="selector-title">{{item.title}}</text>
+        <text class="selector-badge">🍅 {{item.pomodoroCompleted}}/{{item.pomodoroTarget}}</text>
+      </view>
+      <view class="selector-item selector-item-add" bindtap="onAddTaskFromSelector">
+        <text class="independent-icon">➕</text>
+        <text class="selector-title">新建任务</text>
+      </view>
+      <view class="selector-item" bindtap="onIndependentPomodoro">
+        <text class="independent-icon">🍅</text>
+        <text class="selector-title">独立番茄（不绑定任务）</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 番茄完成弹窗 -->
+<view wx:if="{{showCompletionModal}}" class="modal-mask" catchtap="onCloseCompletionModal">
+  <view class="completion-modal" catchtap="onModalContentTap">
+    <text class="completion-close" catchtap="onCloseCompletionModal">✕</text>
+    <view class="completion-icon">🍅</view>
+    <view class="completion-title">番茄完成！</view>
+
+    <view wx:if="{{currentTask}}" class="task-progress-info">
+      <text class="task-progress-label">{{currentTask.title}}</text>
+      <view class="task-progress-bar">
+        <view class="progress-wrapper">
+          <view class="progress-fill" style="width: {{currentTask.pomodoroCompleted / currentTask.pomodoroTarget * 100}}%"></view>
+        </view>
+        <text class="task-progress-text">{{currentTask.pomodoroCompleted}}/{{currentTask.pomodoroTarget}} 番茄</text>
+      </view>
+    </view>
+
+    <view class="completion-actions">
+      <button wx:if="{{currentTask.pomodoroCompleted >= currentTask.pomodoroTarget}}"
+              class="btn-primary completion-btn"
+              bindtap="onCompleteTaskFromModal">
+        ✓ 完成任务
+      </button>
+      <button wx:else
+              class="btn-primary completion-btn"
+              bindtap="onAnotherPomodoro">
+        🍅 再来一个番茄钟
+      </button>
+      <button class="btn-secondary completion-btn" bindtap="onCloseCompletionModal">
+        稍后继续
+      </button>
+    </view>
+  </view>
+</view>
+
+<!-- 休息时长选择弹窗 -->
+<view wx:if="{{showBreakSelector}}" class="modal-mask" catchtap="onCloseBreakSelector">
+  <view class="modal-content break-selector-modal" catchtap="onModalContentTap">
+    <view class="modal-header">
+      <text class="modal-title">选择休息时长</text>
+      <text class="modal-close" catchtap="onCloseBreakSelector">✕</text>
+    </view>
+    <view class="modal-body">
+      <!-- 休息时长选项 -->
+      <view class="break-duration-options">
+        <view class="break-option {{customBreakDuration === 5 ? 'active' : ''}}"
+              bindtap="onSelectBreakDuration" data-duration="5">
+          <text class="break-icon">☕</text>
+          <text class="break-duration-text">5</text>
+          <text class="break-duration-unit">分钟</text>
+          <text class="break-label">短休息</text>
+        </view>
+        <view class="break-option {{customBreakDuration === 10 ? 'active' : ''}}"
+              bindtap="onSelectBreakDuration" data-duration="10">
+          <text class="break-icon">☕</text>
+          <text class="break-duration-text">10</text>
+          <text class="break-duration-unit">分钟</text>
+          <text class="break-label">标准休息</text>
+        </view>
+        <view class="break-option {{customBreakDuration === 15 ? 'active' : ''}}"
+              bindtap="onSelectBreakDuration" data-duration="15">
+          <text class="break-icon">🌙</text>
+          <text class="break-duration-text">15</text>
+          <text class="break-duration-unit">分钟</text>
+          <text class="break-label">长休息</text>
+        </view>
+        <view class="break-option {{customBreakDuration === 20 ? 'active' : ''}}"
+              bindtap="onSelectBreakDuration" data-duration="20">
+          <text class="break-icon">🌙</text>
+          <text class="break-duration-text">20</text>
+          <text class="break-duration-unit">分钟</text>
+          <text class="break-label">长休息</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="break-actions">
+        <button class="btn-primary break-action-btn" bindtap="onConfirmBreak">
+          开始休息
+        </button>
+        <button class="btn-secondary break-action-btn" bindtap="onSkipBreakFromSelector">
+          跳过休息
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 新用户欢迎引导弹窗 -->
+  <view wx:if="{{showWelcomeModal}}" class="modal-mask">
+    <view class="welcome-modal" catchtap="onModalContentTap">
+      <!-- 欢迎图标 -->
+      <view class="welcome-header">
+        <text class="welcome-icon">🎉</text>
+        <view class="welcome-title">欢迎使用 TimeFocus</view>
+        <view class="welcome-subtitle">设置你的头像和昵称，开启高效专注之旅</view>
+      </view>
+
+      <!-- 设置表单 -->
+      <view class="welcome-form">
+        <!-- 头像选择 -->
+        <view class="welcome-avatar-section">
+          <button class="welcome-avatar-btn" open-type="chooseAvatar" bindchooseavatar="onWelcomeChooseAvatar">
+            <image wx:if="{{tempAvatar}}" class="welcome-avatar-preview" src="{{tempAvatar}}" mode="aspectFill"></image>
+            <view wx:else class="welcome-avatar-placeholder">
+              <text class="welcome-avatar-icon">📷</text>
+              <text class="welcome-avatar-text">点击选择头像</text>
+            </view>
+          </button>
+        </view>
+
+        <!-- 昵称输入 -->
+        <view class="welcome-nickname-section">
+          <view class="welcome-input-label">昵称</view>
+          <input
+            class="welcome-nickname-input"
+            type="nickname"
+            placeholder="请输入你的昵称"
+            placeholder-style="line-height: 44rpx;"
+            bindinput="onWelcomeNicknameInput"
+            value="{{tempNickname}}"
+          />
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="welcome-actions">
+        <button wx:if="{{tempNickname}}" class="btn-primary welcome-action-btn" bindtap="onCompleteWelcome">
+          完成设置
+        </button>
+        <button class="btn-secondary welcome-action-btn" bindtap="onSkipWelcome">
+          稍后设置
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

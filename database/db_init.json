@@ -1,0 +1,66 @@
+{
+  "collections": [
+    {
+      "name": "users",
+      "description": "用户信息表",
+      "indexes": [
+        {
+          "keys": [{ "_openid": 1 }],
+          "unique": true
+        }
+      ]
+    },
+    {
+      "name": "tasks",
+      "description": "任务表",
+      "indexes": [
+        {
+          "keys": [{ "_openid": 1, "createdAt": -1 }]
+        },
+        {
+          "keys": [{ "_openid": 1, "status": 1 }]
+        }
+      ]
+    },
+    {
+      "name": "pomodoro_logs",
+      "description": "番茄记录表",
+      "indexes": [
+        {
+          "keys": [{ "_openid": 1, "startedAt": -1 }]
+        },
+        {
+          "keys": [{ "_openid": 1, "taskId": 1 }]
+        }
+      ]
+    },
+    {
+      "name": "user_settings",
+      "description": "用户设置表",
+      "indexes": [
+        {
+          "keys": [{ "_openid": 1 }],
+          "unique": true
+        }
+      ]
+    }
+  ],
+  "security_rules": {
+    "users": {
+      "read": "auth.openid == doc._openid",
+      "write": "auth.openid == doc._openid"
+    },
+    "tasks": {
+      "read": "auth.openid == doc._openid",
+      "write": "auth.openid == doc._openid"
+    },
+    "pomodoro_logs": {
+      "read": "auth.openid == doc._openid",
+      "write": "auth.openid == doc._openid"
+    },
+    "user_settings": {
+      "read": "auth.openid == doc._openid",
+      "write": "auth.openid == doc._openid"
+    }
+  }
+}

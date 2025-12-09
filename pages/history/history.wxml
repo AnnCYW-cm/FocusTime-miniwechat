@@ -1,0 +1,58 @@
+<!-- pages/history/history.wxml -->
+<view class="container">
+  <!-- 日期选择器 -->
+  <view class="date-selector card">
+    <picker mode="date" value="{{selectedDate}}" bindchange="onDateChange">
+      <view class="date-display">
+        <text class="date-icon">📅</text>
+        <text class="date-text">{{selectedDate}}</text>
+        <text class="date-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 当日统计 -->
+  <view wx:if="{{logs.length > 0}}" class="day-stats card">
+    <view class="stats-row">
+      <view class="stat-item-small">
+        <text class="stat-icon-small">🍅</text>
+        <text class="stat-value-small">{{dayStats.count}}</text>
+        <text class="stat-label">番茄数</text>
+      </view>
+      <view class="stat-item-small">
+        <text class="stat-icon-small">⏱</text>
+        <text class="stat-value-small">{{dayStats.duration}}</text>
+        <text class="stat-label">分钟</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 番茄记录列表 -->
+  <view wx:if="{{logs.length > 0}}" class="logs-section">
+    <view class="section-title">🍅 番茄记录</view>
+
+    <view class="log-list">
+      <view wx:for="{{logs}}" wx:key="_id" class="log-item">
+        <view class="log-time">
+          <text class="time-icon">⏰</text>
+          <text class="time-text">{{item.startTime}} - {{item.endTime}}</text>
+        </view>
+        <view class="log-content">
+          <view class="log-main">
+            <text class="log-task">{{item.taskTitle || '独立番茄'}}</text>
+            <view class="log-duration">
+              <text class="duration-icon">⏱</text>
+              <text>{{item.duration}}分钟</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:else class="empty-state">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">这一天还没有番茄记录\n选择其他日期查看</text>
+  </view>
+</view>

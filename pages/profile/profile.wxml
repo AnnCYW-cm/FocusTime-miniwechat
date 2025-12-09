@@ -1,0 +1,86 @@
+<!-- pages/profile/profile.wxml -->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="profile-card card">
+    <!-- 已登录状态 -->
+    <view wx:if="{{userInfo.nickName}}" class="avatar-section">
+      <image class="avatar" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <text class="nickname">{{userInfo.nickName}}</text>
+        <text class="register-days">⏰ 已使用 {{registerDays}} 天</text>
+      </view>
+    </view>
+
+    <!-- 未登录状态 - 登录引导 -->
+    <view wx:else class="login-guide">
+      <view class="login-icon">👋</view>
+      <view class="login-title">欢迎使用 TimeFocus</view>
+      <view class="login-desc">设置你的头像和昵称，开始高效专注之旅</view>
+
+      <view class="login-form">
+        <button class="btn-avatar" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image wx:if="{{tempAvatar}}" class="preview-avatar" src="{{tempAvatar}}" mode="aspectFill"></image>
+          <text wx:else class="avatar-placeholder">
+            <text class="avatar-icon">📷</text>
+            <text class="avatar-text">点击选择头像</text>
+          </text>
+        </button>
+
+        <view class="input-wrapper">
+          <text class="input-label">昵称</text>
+          <input class="input-nickname" type="nickname" placeholder="请输入你的昵称" placeholder-style="line-height: 44rpx;" bindinput="onNicknameInput" value="{{tempNickname}}" />
+        </view>
+
+        <button wx:if="{{tempNickname}}" class="btn-save" bindtap="onSaveUserInfo">
+          <text>✓ 完成设置</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 累计数据 -->
+  <view class="stats-card card">
+    <view class="stats-title">📊 累计数据</view>
+    <view class="stats-grid">
+      <view class="stat-box">
+        <text class="stat-icon">🍅</text>
+        <text class="stat-number">{{cumulativeStats.totalPomodoros}}</text>
+        <text class="stat-label">总番茄数</text>
+      </view>
+      <view class="stat-box">
+        <text class="stat-icon">⏱</text>
+        <text class="stat-number">{{cumulativeStats.totalHours}}</text>
+        <text class="stat-label">总时长(小时)</text>
+      </view>
+      <view class="stat-box">
+        <text class="stat-icon">✅</text>
+        <text class="stat-number">{{cumulativeStats.totalTasks}}</text>
+        <text class="stat-label">完成任务</text>
+      </view>
+      <view class="stat-box">
+        <text class="stat-icon">📈</text>
+        <text class="stat-number">{{cumulativeStats.avgDaily}}</text>
+        <text class="stat-label">日均番茄</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-list">
+    <view class="menu-item" bindtap="onGoToSettings">
+      <view class="menu-left">
+        <text class="menu-icon">⚙️</text>
+        <text class="menu-title">设置</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="onAbout">
+      <view class="menu-left">
+        <text class="menu-icon">ℹ️</text>
+        <text class="menu-title">关于</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+</view>
